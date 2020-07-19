@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>eu.prechtel</groupId>
-    <artifactId>kafka-bootcamp</artifactId>
+    <artifactId>spring-kafka-bootcamp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>kafka-bootcamp</name>
+    <name>spring-kafka-bootcamp</name>
     <description>Workshop for Spring Boot and Kafka</description>
 
     <properties>

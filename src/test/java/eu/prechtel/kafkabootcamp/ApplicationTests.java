@@ -6,11 +6,11 @@ import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
 @EmbeddedKafka
-class KafkaBootcampApplicationTests {
+class ApplicationTests {
 
     private EmbeddedKafkaBroker broker;
 
-	public KafkaBootcampApplicationTests(@Autowired EmbeddedKafkaBroker broker) {
+	public ApplicationTests(@Autowired EmbeddedKafkaBroker broker) {
 		this.broker = broker;
 	}
 
