@@ -1,11 +1,7 @@
-package eu.prechtel.kafkabootcamp;
+package eu.prechtel.bootcamp;
 
-import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +12,9 @@ import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -89,7 +82,7 @@ class ApplicationTests {
 		final ConsumerRecord<Integer, String> singleRecord = KafkaTestUtils.getSingleRecord(consumer, TOPIC);
 		//ConsumerRecord<String, String> singleRecord = records.poll(10000, TimeUnit.MILLISECONDS);
 		assertNotNull(singleRecord);
-		//assertEquals(singleRecord.value(), value);
+		assertEquals(singleRecord.value(), value);
 	}
 
 	private KafkaTemplate<Integer, String> kafkaTemplate() {

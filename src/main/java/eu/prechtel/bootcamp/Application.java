@@ -1,4 +1,4 @@
-package eu.prechtel.kafkabootcamp;
+package eu.prechtel.bootcamp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
