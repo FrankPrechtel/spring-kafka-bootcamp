@@ -7,3 +7,10 @@ spring:
       max-poll-records: 1
     template:
       default-topic: example-kafka-topic
+  cloud:
+    stream:
+      bindings:
+        process-in-0:
+          destination: input-kafka-topic
+        process-out-0:
+          destination: output-kafka-topic

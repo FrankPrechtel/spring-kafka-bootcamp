@@ -62,7 +62,7 @@ public class EmbeddedKafkaConfig {
 		consumerConfig.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 		consumerConfig.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		log.info("consumerConfig: {}", consumerConfig);
+		log.debug("consumerConfig: {}", consumerConfig);
 		return consumerConfig;
 	}
 
@@ -74,7 +74,7 @@ public class EmbeddedKafkaConfig {
 		producerConfig.put(ProducerConfig.RETRIES_CONFIG, 1);
 		// https://docs.confluent.io/current/installation/configuration/producer-configs.html#acks
 		//producerConfig.put(ProducerConfig.ACKS_CONFIG, "1"); // or "all"
-		log.info("producerConfig: {}", producerConfig);
+		log.debug("producerConfig: {}", producerConfig);
 		return producerConfig;
 	}
 }
