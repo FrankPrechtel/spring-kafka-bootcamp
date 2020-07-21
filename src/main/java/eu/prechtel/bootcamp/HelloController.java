@@ -53,6 +53,5 @@ public class HelloController {
 	@KafkaListener(groupId = "hello-controller", topics = "example-kafka-topic", containerFactory = "kafkaListenerContainerFactory")
 	public void consume(String message) {
 		logger.info("MESSAGE: {}", message);
-		System.exit(1);
 	}
 }
