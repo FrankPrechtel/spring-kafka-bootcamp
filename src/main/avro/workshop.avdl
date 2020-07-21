@@ -1,0 +1,10 @@
+@namespace("eu.prechtel.bootcamp")
+
+protocol Bootcamp {
+	record Participant {
+		string uuid;
+		string surname;
+		string familyName;
+		union { null, string} favoriteTextEditor;
+	}
+}
