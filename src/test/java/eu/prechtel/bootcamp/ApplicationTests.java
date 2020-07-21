@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @EmbeddedKafka(
 	partitions = 2,
 	topics = "apptest-kafka-topic",
+	controlledShutdown = true,
 	ports = 9092, zookeeperPort = 2181)
 //	bootstrapServersProperty = "spring.kafka.bootstrap-servers")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -34,8 +35,8 @@ class ApplicationTests {
 
 	static final String TOPIC = "apptest-kafka-topic";
 	static final String HELLO_KAFKA = "Hello Kafka!";
-	final private EmbeddedKafkaBroker embeddedKafka;
 	final Logger log = LoggerFactory.getLogger(ApplicationTests.class);
+	final private EmbeddedKafkaBroker embeddedKafka;
 
 	ApplicationTests(@Autowired EmbeddedKafkaBroker embeddedKafka) {
 		this.embeddedKafka = embeddedKafka;
@@ -53,9 +54,9 @@ class ApplicationTests {
 	}
 
 	@Test
-	void simpleSend() throws Exception {
+	void simpleSend() {
 		Producer<Integer, String> producer = getIntegerStringProducer();
-		producer.send(new ProducerRecord<Integer, String>(TOPIC, new Random().nextInt(), HELLO_KAFKA));
+		producer.send(new ProducerRecord<>(TOPIC, new Random().nextInt(), HELLO_KAFKA));
 		producer.flush();
 		producer.close();
 
@@ -75,10 +76,10 @@ class ApplicationTests {
 	void partitionDistribution() {
 		Producer<Integer, String> producer = getIntegerStringProducer();
 
-		for (int i=0; i<100; i++) {
+		for (int i = 0; i < 100; i++) {
 			// should be random, but we try it with a fixed key first
 			//producer.send(new ProducerRecord<Integer, String>(TOPIC, 0, value));
-			producer.send(new ProducerRecord<Integer, String>(TOPIC, new Random().nextInt(), HELLO_KAFKA));
+			producer.send(new ProducerRecord<>(TOPIC, new Random().nextInt(), HELLO_KAFKA));
 		}
 		producer.flush();
 		producer.close();
@@ -99,10 +100,10 @@ class ApplicationTests {
 	@Test
 	void timeMachine() {
 		Producer<Integer, String> producer = getIntegerStringProducer();
-		for (int i=0; i<100; i++) {
+		for (int i = 0; i < 100; i++) {
 			// should be random, but we try it with a fixed key first
 			//producer.send(new ProducerRecord<Integer, String>(TOPIC, 0, value));
-			producer.send(new ProducerRecord<Integer, String>(TOPIC, new Random().nextInt(), HELLO_KAFKA));
+			producer.send(new ProducerRecord<>(TOPIC, new Random().nextInt(), HELLO_KAFKA));
 		}
 		producer.flush();
 		producer.close();

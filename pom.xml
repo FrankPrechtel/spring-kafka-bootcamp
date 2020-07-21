@@ -52,7 +52,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.avro</groupId>
-			<artifactId>avro</artifactId>
+			<artifactId>avro-compiler</artifactId>
 			<version>${avro.version}</version>
 		</dependency>
 	</dependencies>

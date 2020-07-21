@@ -19,22 +19,23 @@ import java.util.concurrent.ExecutionException;
 public class HelloController {
 
 	private final KafkaTemplate<String, String> template;
-	Logger log = LoggerFactory.getLogger(HelloController.class);
+	final Logger log = LoggerFactory.getLogger(HelloController.class);
 
 	HelloController(@Autowired KafkaTemplate<String, String> template) {
 		this.template = template;
 	}
 
-	void sendSync(String message) throws ExecutionException, InterruptedException {
+	SendResult<String, String> sendSyncEvent(String message) throws ExecutionException, InterruptedException {
 		final SendResult<String, String> sendResult = template.send("example-kafka-topic", UUID.randomUUID().toString(), message).get();
+		template.flush();
 		log.info("sendResult: {}", sendResult.getRecordMetadata().offset());
-		//template.flush();
+		return sendResult;
 	}
 
-	void sendAsync(String message) {
+	ListenableFuture<SendResult<String, String>> sendAsyncEvent(String message) {
 		ListenableFuture<SendResult<String, String>> future =
 			template.send("example-kafka-topic", UUID.randomUUID().toString(), message);
-		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+		future.addCallback(new ListenableFutureCallback<>() {
 
 			@Override
 			public void onSuccess(SendResult<String, String> result) {
@@ -46,6 +47,7 @@ public class HelloController {
 				log.error("Unable to send message=[{}] due to: {}", message, ex.getMessage());
 			}
 		});
+		return future;
 	}
 
 	@KafkaListener(groupId = "hello-controller", topics = "example-kafka-topic", containerFactory = "kafkaListenerContainerFactory")

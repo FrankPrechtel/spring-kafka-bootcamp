@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.ContainerProperties;
 
 import java.util.HashMap;
 
@@ -22,37 +22,37 @@ import java.util.HashMap;
 @Profile("kafka-embedded")
 public class EmbeddedKafkaConfig {
 
-	Logger logger = LoggerFactory.getLogger(EmbeddedKafkaConfig.class);
+	final Logger log = LoggerFactory.getLogger(EmbeddedKafkaConfig.class);
 
 	@Value("${spring.kafka.bootstrap-servers:localhost:9092}")
 	private String bootstrapServers;
 
 	@Bean
 	public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
-		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory();
+		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory());
+		factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
 		factory.setConcurrency(1);
 		return factory;
 	}
 
 	@Bean
 	KafkaTemplate<String, String> kafkaTemplate() {
-		KafkaTemplate<String, String> kafkaTemplate = new KafkaTemplate<>(producerFactory());
-		return kafkaTemplate;
+		return new KafkaTemplate<>(producerFactory());
 	}
 
 	private ConsumerFactory<String, String> consumerFactory() {
-		final DefaultKafkaConsumerFactory<String, String> consumerFactory =
-			new DefaultKafkaConsumerFactory<>(
-				getConsumerConfig(),
-				new StringDeserializer(),
-				new StringDeserializer());
-		return consumerFactory;
+		return new DefaultKafkaConsumerFactory<>(
+			getConsumerConfig(),
+			new StringDeserializer(),
+			new StringDeserializer());
 	}
 
 	private ProducerFactory<String, String> producerFactory() {
-		HashMap<String, Object> producerConfig = getProducerConfig();
-		return new DefaultKafkaProducerFactory<>(producerConfig, new StringSerializer(), new StringSerializer());
+		return new DefaultKafkaProducerFactory<>(
+			getProducerConfig(),
+			new StringSerializer(),
+			new StringSerializer());
 	}
 
 	private HashMap<String, Object> getConsumerConfig() {
@@ -62,7 +62,7 @@ public class EmbeddedKafkaConfig {
 		consumerConfig.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 		consumerConfig.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		logger.info("consumerConfig: {}", consumerConfig);
+		log.info("consumerConfig: {}", consumerConfig);
 		return consumerConfig;
 	}
 
@@ -74,7 +74,7 @@ public class EmbeddedKafkaConfig {
 		producerConfig.put(ProducerConfig.RETRIES_CONFIG, 1);
 		// https://docs.confluent.io/current/installation/configuration/producer-configs.html#acks
 		//producerConfig.put(ProducerConfig.ACKS_CONFIG, "1"); // or "all"
-		logger.info("producerConfig: {}", producerConfig);
+		log.info("producerConfig: {}", producerConfig);
 		return producerConfig;
 	}
 }

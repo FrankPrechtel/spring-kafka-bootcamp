@@ -1,13 +1,17 @@
 POST http://localhost:8080/sync
 Content-Type: application/json
 
-{"message": "sync me"}
+{
+	"message": "sync me"
+}
 
 ###
 
 POST http://localhost:8080/async
 Content-Type: application/json
 
-{"message": "async hell"}
+{
+	"message": "async hell"
+}
 
 ###
