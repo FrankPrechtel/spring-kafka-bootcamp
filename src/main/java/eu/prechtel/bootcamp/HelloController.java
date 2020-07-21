@@ -3,6 +3,7 @@ package eu.prechtel.bootcamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -14,6 +15,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @Service
+@EnableKafka
 public class HelloController {
 
 	private final KafkaTemplate<String, String> template;
@@ -25,6 +27,7 @@ public class HelloController {
 
 	void sendSync(String message) throws ExecutionException, InterruptedException {
 		template.send(UUID.randomUUID().toString(), message).get();
+		template.flush();
 	}
 
 	void sendAsync(String message) {
@@ -44,5 +47,11 @@ public class HelloController {
 					+ message + "] due to: " + ex.getMessage());
 			}
 		});
+	}
+
+	@KafkaListener(groupId = "hello-controller", topics = "example.kafka.topic", containerFactory = "kafkaListenerContainerFactory")
+	public void consume(String message) {
+		logger.info("MESSAGE: {}", message);
+		System.exit(1);
 	}
 }

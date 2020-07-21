@@ -30,9 +30,9 @@ public class EmbeddedKafkaConfig {
 	@Value("${spring.kafka.template.default-topic:example.kafka.topic}")
 	private String topic;
 
-	@Bean
-	public ConcurrentKafkaListenerContainerFactory myKafkaListenerContainerFactory() {
-		ConcurrentKafkaListenerContainerFactory factory = new ConcurrentKafkaListenerContainerFactory();
+	@Bean("kafkaListenerContainerFactory")
+	public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory();
 		factory.setConsumerFactory(consumerFactory());
 		factory.setConcurrency(1);
 		return factory;
@@ -46,7 +46,8 @@ public class EmbeddedKafkaConfig {
 	}
 
 	private ConsumerFactory<String, String> consumerFactory() {
-		return new DefaultKafkaConsumerFactory<>(getConsumerConfig(), new StringDeserializer(), new StringDeserializer());
+		final DefaultKafkaConsumerFactory<String, String> consumerFactory = new DefaultKafkaConsumerFactory<>(getConsumerConfig(), new StringDeserializer(), new StringDeserializer());
+		return consumerFactory;
 	}
 
 	private ProducerFactory<String, String> producerFactory() {
@@ -57,8 +58,9 @@ public class EmbeddedKafkaConfig {
 	private HashMap<String, Object> getConsumerConfig() {
 		HashMap<String, Object> consumerConfig = new HashMap<>();
 		consumerConfig.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		// https://docs.confluent.io/current/installation/configuration/producer-configs.html#acks
+		// https://docs.confluent.io/current/installation/configuration/consumer-configs.html#enable.auto.commit
 		consumerConfig.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+		logger.info("consumerConfig: {}", consumerConfig);
 		return consumerConfig;
 	}
 
@@ -67,6 +69,7 @@ public class EmbeddedKafkaConfig {
 		producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		// https://docs.confluent.io/current/installation/configuration/producer-configs.html#acks
 		producerConfig.put(ProducerConfig.ACKS_CONFIG, "all");
+		logger.info("producerConfig: {}", producerConfig);
 		return producerConfig;
 	}
 }

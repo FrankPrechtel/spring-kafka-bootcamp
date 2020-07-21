@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DirtiesContext
-@EmbeddedKafka(partitions = 2, topics = {"example.kafka.topic"}, controlledShutdown = true, ports = 9092, zookeeperPort = 2181)
+@EmbeddedKafka(partitions = 1, topics = {"example.kafka.topic"}, controlledShutdown = false, zookeeperPort = 2181, ports = 9092)//bootstrapServersProperty = "spring.kafka.bootstrap-servers")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ApplicationTests {
 
