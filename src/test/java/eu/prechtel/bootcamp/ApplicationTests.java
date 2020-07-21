@@ -26,17 +26,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @DirtiesContext
 @EmbeddedKafka(
 	partitions = 2,
-	topics = "example-kafka-topic",
-	controlledShutdown = true,
-	zookeeperPort = 2181,
-	ports = 9092)//bootstrapServersProperty = "spring.kafka.bootstrap-servers")
+	topics = "apptest-kafka-topic",
+	ports = 9092, zookeeperPort = 2181)
+//	bootstrapServersProperty = "spring.kafka.bootstrap-servers")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ApplicationTests {
 
-	static final String TOPIC = "example-kafka-topic";
+	static final String TOPIC = "apptest-kafka-topic";
 	static final String HELLO_KAFKA = "Hello Kafka!";
 	final private EmbeddedKafkaBroker embeddedKafka;
-	final Logger logger = LoggerFactory.getLogger(ApplicationTests.class);
+	final Logger log = LoggerFactory.getLogger(ApplicationTests.class);
 
 	ApplicationTests(@Autowired EmbeddedKafkaBroker embeddedKafka) {
 		this.embeddedKafka = embeddedKafka;
@@ -49,7 +48,8 @@ class ApplicationTests {
 
 	@Test
 	void basicCheck() {
-		logger.info("BROKER: " + embeddedKafka.getBrokersAsString());
+		assertNotNull(embeddedKafka);
+		log.info("BROKER: " + embeddedKafka.getBrokersAsString());
 	}
 
 	@Test
@@ -61,8 +61,8 @@ class ApplicationTests {
 
 		KafkaConsumer<Integer, String> consumer = getIntegerStringKafkaConsumer();
 		embeddedKafka.consumeFromAllEmbeddedTopics(consumer);
-		final ConsumerRecord<Integer, String> singleRecord = KafkaTestUtils.getSingleRecord(consumer, TOPIC, 1000L);
-		logger.info("received record with key '{}', value '{}' on partition {}",
+		final ConsumerRecord<Integer, String> singleRecord = KafkaTestUtils.getSingleRecord(consumer, TOPIC, 10000L);
+		log.info("received record with key '{}', value '{}' on partition {}",
 			singleRecord.key(),
 			singleRecord.value(),
 			singleRecord.partition());
@@ -85,9 +85,10 @@ class ApplicationTests {
 
 		KafkaConsumer<Integer, String> consumer = getIntegerStringKafkaConsumer();
 		embeddedKafka.consumeFromAllEmbeddedTopics(consumer);
-		final ConsumerRecords<Integer, String> records = KafkaTestUtils.getRecords(consumer, 1000L, 100);
+		final ConsumerRecords<Integer, String> records = KafkaTestUtils.getRecords(consumer, 10000L, 100);
 		// TODO: output partition of each message
 		// TODO: assert that both partitions are present in the resulting records
+		consumer.close();
 	}
 
 	private KafkaConsumer<Integer, String> getIntegerStringKafkaConsumer() {
@@ -113,7 +114,7 @@ class ApplicationTests {
 		//consumer.seek(partition, 10L);
 		final ConsumerRecords<Integer, String> replays = KafkaTestUtils.getRecords(consumer, 1000L);
 		consumer.close();
-		logger.info("replays: {}", replays.count());
+		log.info("replays: {}", replays.count());
 		assertTrue(replays.isEmpty());
 		//assertFalse(replays.isEmpty());
 	}

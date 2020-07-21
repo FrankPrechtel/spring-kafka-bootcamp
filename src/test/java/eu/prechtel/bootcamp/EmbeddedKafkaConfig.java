@@ -24,11 +24,11 @@ public class EmbeddedKafkaConfig {
 
 	Logger logger = LoggerFactory.getLogger(EmbeddedKafkaConfig.class);
 
-	//@Value("${spring.kafka.bootstrap-servers}")
-	private String bootstrapServers = "PLAINTEXT://127.0.0.1:9092";
+	@Value("${spring.kafka.bootstrap-servers}")
+	private String bootstrapServers;
 
 	//@Value("${spring.kafka.template.default-topic}")
-	private String topic= "example-kafka-topic";
+	//private String topic;
 
 	@Bean("kafkaListenerContainerFactory")
 	public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
@@ -41,12 +41,15 @@ public class EmbeddedKafkaConfig {
 	@Bean
 	KafkaTemplate<String, String> kafkaTemplate() {
 		KafkaTemplate<String, String> kafkaTemplate = new KafkaTemplate<>(producerFactory());
-		kafkaTemplate.setDefaultTopic(topic);
 		return kafkaTemplate;
 	}
 
 	private ConsumerFactory<String, String> consumerFactory() {
-		final DefaultKafkaConsumerFactory<String, String> consumerFactory = new DefaultKafkaConsumerFactory<>(getConsumerConfig(), new StringDeserializer(), new StringDeserializer());
+		final DefaultKafkaConsumerFactory<String, String> consumerFactory =
+			new DefaultKafkaConsumerFactory<>(
+				getConsumerConfig(),
+				new StringDeserializer(),
+				new StringDeserializer());
 		return consumerFactory;
 	}
 

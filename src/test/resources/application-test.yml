@@ -1,8 +1,9 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
     consumer:
       auto-offset-reset: earliest
       enable-auto-commit: false
       group-id: bootcamp
       max-poll-records: 1
+    template:
+      default-topic: example-kafka-topic
