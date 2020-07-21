@@ -1,17 +1,9 @@
-# Getting Started
+https://docs.cloudera.com/documentation/kafka/latest/topics/kafka_command_line.html
 
-### Reference Documentation
-For further reference, please consider the following sections:
+./kafka-topics --zookeeper localhost:2181 --list
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/maven-plugin/reference/html/#build-image)
-* [Apache Kafka Streams Support](https://docs.spring.io/spring-kafka/docs/current/reference/html/_reference.html#kafka-streams)
-* [Apache Kafka Streams Binding Capabilities of Spring Cloud Stream](https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/#_kafka_streams_binding_capabilities_of_spring_cloud_stream)
-* [Spring for Apache Kafka](https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/htmlsingle/#boot-features-kafka)
+./kafka-console-producer --broker-list localhost:9092 --topic example-kafka-topic < message.tx
 
-### Guides
-The following guides illustrate how to use some features concretely:
-
-* [Samples for using Apache Kafka Streams with Spring Cloud stream](https://github.com/spring-cloud/spring-cloud-stream-samples/tree/master/kafka-streams-samples)
-
+bin/zookeeper-server-start etc/kafka/zookeeper.properties
+bin/kafka-server-start etc/kafka/server.properties
+bin/kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic example-kafka-topic

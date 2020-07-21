@@ -12,9 +12,8 @@ import org.springframework.stereotype.Component;
 public class TemplateListener {
 	Logger logger = LoggerFactory.getLogger(TemplateListener.class);
 
-	@KafkaListener(groupId = "template-listener", topics = "example.kafka.topic", containerFactory = "kafkaListenerContainerFactory")
-	public void consume(ConsumerRecord<String, String> message) {
-		logger.info("MESSAGE: {} # ", message.key(), message.value());
-		System.exit(1);
+	@KafkaListener(groupId = "template-listener", topics = "example-kafka-topic", containerFactory = "kafkaListenerContainerFactory")
+	public void consume(ConsumerRecord<?, ?> message) {
+		logger.info("MESSAGE: {} # {}", message.key(), message.value());
 	}
 }

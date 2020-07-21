@@ -24,11 +24,11 @@ public class EmbeddedKafkaConfig {
 
 	Logger logger = LoggerFactory.getLogger(EmbeddedKafkaConfig.class);
 
-	@Value("${spring.kafka.bootstrap-servers:localhost:9092}")
-	private String bootstrapServers;
+	//@Value("${spring.kafka.bootstrap-servers}")
+	private String bootstrapServers = "PLAINTEXT://127.0.0.1:9092";
 
-	@Value("${spring.kafka.template.default-topic:example.kafka.topic}")
-	private String topic;
+	//@Value("${spring.kafka.template.default-topic}")
+	private String topic= "example-kafka-topic";
 
 	@Bean("kafkaListenerContainerFactory")
 	public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
@@ -60,6 +60,8 @@ public class EmbeddedKafkaConfig {
 		consumerConfig.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		// https://docs.confluent.io/current/installation/configuration/consumer-configs.html#enable.auto.commit
 		consumerConfig.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+		consumerConfig.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		logger.info("consumerConfig: {}", consumerConfig);
 		return consumerConfig;
 	}
@@ -67,8 +69,11 @@ public class EmbeddedKafkaConfig {
 	private HashMap<String, Object> getProducerConfig() {
 		HashMap<String, Object> producerConfig = new HashMap<>();
 		producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		producerConfig.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		producerConfig.put(ProducerConfig.RETRIES_CONFIG, 1);
 		// https://docs.confluent.io/current/installation/configuration/producer-configs.html#acks
-		producerConfig.put(ProducerConfig.ACKS_CONFIG, "all");
+		//producerConfig.put(ProducerConfig.ACKS_CONFIG, "1"); // or "all"
 		logger.info("producerConfig: {}", producerConfig);
 		return producerConfig;
 	}

@@ -19,6 +19,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -42,7 +43,8 @@ class ApplicationTests {
 	}
 
 	@Test
-	void simpleSend() {
+	void simpleSend() throws Exception {
+		for (int i=0; i<100; i++) Thread.sleep(500L);
 		final String value = "Hello Kafka!";
 		Map<String, Object> producerProps = new HashMap<>(KafkaTestUtils.producerProps(embeddedKafka));
 		Producer<Integer, String> producer = new DefaultKafkaProducerFactory<Integer, String>(producerProps).createProducer();

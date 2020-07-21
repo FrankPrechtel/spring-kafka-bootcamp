@@ -9,6 +9,8 @@
 		<appender-ref ref="STDOUT"/>
 	</root>
 	<logger name="eu.prechtel.bootcamp" level="debug"/>
-	<logger name="kafka" level="error"/>
-	<logger name="org.apache" level="error"/>
+	<!--<logger name="kafka" level="info"/>-->
+	<logger name="kafka" level="warn"/>
+	<!--<logger name="org.apache" level="info"/>-->
+	<logger name="org.apache" level="warn"/>
 </configuration>

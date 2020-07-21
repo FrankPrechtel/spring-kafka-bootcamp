@@ -26,13 +26,14 @@ public class HelloController {
 	}
 
 	void sendSync(String message) throws ExecutionException, InterruptedException {
-		template.send(UUID.randomUUID().toString(), message).get();
-		template.flush();
+		final SendResult<String, String> sendResult = template.send("example-kafka-topic", UUID.randomUUID().toString(), message).get();
+		logger.info("sendResult: {}", sendResult.getRecordMetadata().offset());
+		//template.flush();
 	}
 
 	void sendAsync(String message) {
 		ListenableFuture<SendResult<String, String>> future =
-			template.send(UUID.randomUUID().toString(), message);
+			template.send("example-kafka-topic", UUID.randomUUID().toString(), message);
 		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 
 			@Override
@@ -49,7 +50,7 @@ public class HelloController {
 		});
 	}
 
-	@KafkaListener(groupId = "hello-controller", topics = "example.kafka.topic", containerFactory = "kafkaListenerContainerFactory")
+	@KafkaListener(groupId = "hello-controller", topics = "example-kafka-topic", containerFactory = "kafkaListenerContainerFactory")
 	public void consume(String message) {
 		logger.info("MESSAGE: {}", message);
 		System.exit(1);
