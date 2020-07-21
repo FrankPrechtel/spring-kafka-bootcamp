@@ -17,8 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 @EmbeddedKafka(
 	partitions = 1,
 	topics = "example-kafka-topic",
-	//ports = 9092, zookeeperPort = 2181)
-	bootstrapServersProperty = "spring.kafka.bootstrap-servers")
+	ports = 9092, zookeeperPort = 2181)
+	//bootstrapServersProperty = "spring.kafka.bootstrap-servers")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TemplateTests {
 

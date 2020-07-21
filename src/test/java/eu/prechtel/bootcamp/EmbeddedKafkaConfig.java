@@ -24,13 +24,10 @@ public class EmbeddedKafkaConfig {
 
 	Logger logger = LoggerFactory.getLogger(EmbeddedKafkaConfig.class);
 
-	@Value("${spring.kafka.bootstrap-servers}")
+	@Value("${spring.kafka.bootstrap-servers:localhost:9092}")
 	private String bootstrapServers;
 
-	//@Value("${spring.kafka.template.default-topic}")
-	//private String topic;
-
-	@Bean("kafkaListenerContainerFactory")
+	@Bean
 	public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory();
 		factory.setConsumerFactory(consumerFactory());
