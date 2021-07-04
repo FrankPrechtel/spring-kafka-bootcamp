@@ -18,16 +18,18 @@ import java.util.concurrent.ExecutionException;
 @EnableKafka
 public class HelloController {
 
-	private final KafkaTemplate<String, String> template;
 	final Logger log = LoggerFactory.getLogger(HelloController.class);
+	private final KafkaTemplate<String, String> template;
 
 	HelloController(@Autowired KafkaTemplate<String, String> template) {
 		this.template = template;
 	}
 
 	SendResult<String, String> sendSyncEvent(String message) throws ExecutionException, InterruptedException {
-		final SendResult<String, String> sendResult = template.send("example-kafka-topic", UUID.randomUUID().toString(), message).get();
-		template.flush();
+		final SendResult<String, String> sendResult =
+			template
+				.send("example-kafka-topic", UUID.randomUUID().toString(), message)
+				.get();
 		log.info("sendResult: {}", sendResult.getRecordMetadata().offset());
 		return sendResult;
 	}
@@ -35,6 +37,7 @@ public class HelloController {
 	ListenableFuture<SendResult<String, String>> sendAsyncEvent(String message) {
 		ListenableFuture<SendResult<String, String>> future =
 			template.send("example-kafka-topic", UUID.randomUUID().toString(), message);
+		template.flush();
 		future.addCallback(new ListenableFutureCallback<>() {
 
 			@Override

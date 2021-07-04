@@ -12,5 +12,7 @@ spring:
       bindings:
         process-in-0:
           destination: input-kafka-topic
+        process-in-1:
+          destination: another-kafka-topic
         process-out-0:
           destination: output-kafka-topic

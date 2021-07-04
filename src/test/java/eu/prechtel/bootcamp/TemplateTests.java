@@ -1,7 +1,6 @@
 package eu.prechtel.bootcamp;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 	partitions = 1,
 	controlledShutdown = true,
 	topics = "example-kafka-topic",
-	ports = 9092, zookeeperPort = 2181)
-//bootstrapServersProperty = "spring.kafka.bootstrap-servers")
+	ports = 9092, zookeeperPort = 2181
+//	bootstrapServersProperty = "spring.kafka.bootstrap-servers"
+)
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TemplateTests {
 
