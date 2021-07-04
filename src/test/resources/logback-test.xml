@@ -13,4 +13,5 @@
 	<logger name="kafka" level="warn"/>
 	<!--<logger name="org.apache" level="info"/>-->
 	<logger name="org.apache" level="warn"/>
+	<logger name="state.change.logger" level="error"/>
 </configuration>

@@ -7,6 +7,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,8 @@ import java.util.stream.IntStream;
 	partitions = 1,
 	controlledShutdown = true,
 	topics = {"input-kafka-topic", "output-kafka-topic"},
-	ports = 9092, zookeeperPort = 2181)
-//bootstrapServersProperty = "spring.kafka.bootstrap-servers")
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	ports = 9092, zookeeperPort = 2181,
+	bootstrapServersProperty = "spring.kafka.bootstrap-servers")
 public class StreamTests {
 	final Logger log = LoggerFactory.getLogger(StreamTests.class);
 

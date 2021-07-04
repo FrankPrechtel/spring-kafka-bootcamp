@@ -28,9 +28,8 @@ import static org.junit.jupiter.api.Assertions.*;
 	partitions = 2,
 	topics = "apptest-kafka-topic",
 	controlledShutdown = true,
-	ports = 9092, zookeeperPort = 2181)
-//	bootstrapServersProperty = "spring.kafka.bootstrap-servers")
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	ports = 9092, zookeeperPort = 2181,
+	bootstrapServersProperty = "spring.kafka.bootstrap-servers")
 class ApplicationTests {
 
 	static final String TOPIC = "apptest-kafka-topic";

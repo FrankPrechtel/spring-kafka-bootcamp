@@ -5,9 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.ExecutionException;
 
@@ -20,16 +23,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 	partitions = 1,
 	controlledShutdown = true,
 	topics = "example-kafka-topic",
-	ports = 9092, zookeeperPort = 2181
-//	bootstrapServersProperty = "spring.kafka.bootstrap-servers"
+	ports = 9092, zookeeperPort = 2181,
+	bootstrapServersProperty = "spring.kafka.bootstrap-servers"
 )
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TemplateTests {
 
 	final Logger log = LoggerFactory.getLogger(TemplateTests.class);
+	final private EmbeddedKafkaBroker embeddedKafka;
+	private final HelloController controller;
 
-	@Autowired
-	private HelloController controller;
+	TemplateTests(
+		@Autowired EmbeddedKafkaBroker embeddedKafka,
+		@Autowired HelloController controller) {
+		this.embeddedKafka = embeddedKafka;
+		this.controller = controller;
+	}
 
 	@Test
 	void helloSync() throws ExecutionException, InterruptedException {
@@ -44,8 +52,7 @@ public class TemplateTests {
 	}
 
 	@Test
-	void helloAsync() {
-		controller.sendAsyncEvent("async");
-		controller.sendAsyncEvent("async");
+	void helloAsync() throws Exception {
+		final ListenableFuture<SendResult<String, String>> async = controller.sendAsyncEvent("async");
 	}
 }
