@@ -16,15 +16,18 @@ import org.springframework.stereotype.Component;
 public class TemplateListener {
 	final Logger log = LoggerFactory.getLogger(TemplateListener.class);
 
-	@KafkaListener(groupId = "template-listener", topics = "example-kafka-topic", containerFactory = "kafkaListenerContainerFactory")
+	@KafkaListener(
+		groupId = "template-listener",
+		topics = "example-kafka-topic",
+		containerFactory = "kafkaListenerContainerFactory")
 	public void consume(@Payload ConsumerRecord<String, String> record, @Header(KafkaHeaders.OFFSET) long offset, Acknowledgment ack) {
 
 		if (System.currentTimeMillis() % 2L == 0) {
-			log.info("MESSAGE  ACK: [{}] with [{}] and offset [{}]", record.key(), record.value(), offset);
+			log.info("TemplateListener  ACK: [{}] with [{}] and offset [{}]", record.key(), record.value(), offset);
 			ack.acknowledge();
 		} else {
-			log.info("MESSAGE NACK: [{}] with [{}] and offset [{}]", record.key(), record.value(), offset);
-			ack.nack(10L);
+			log.info("TemplateListener NACK: [{}] with [{}] and offset [{}]", record.key(), record.value(), offset);
+			ack.nack(1_000L);
 		}
 	}
 }
