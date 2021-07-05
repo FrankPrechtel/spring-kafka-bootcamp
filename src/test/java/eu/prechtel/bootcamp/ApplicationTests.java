@@ -7,7 +7,6 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.TopicPartition;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,15 +76,15 @@ class ApplicationTests {
 
 		for (int i = 0; i < 100; i++) {
 			// should be random, but we try it with a fixed key first
-			//producer.send(new ProducerRecord<Integer, String>(TOPIC, 0, value));
-			producer.send(new ProducerRecord<>(TOPIC, new Random().nextInt(), HELLO_KAFKA));
+			producer.send(new ProducerRecord<Integer, String>(TOPIC, 0, HELLO_KAFKA));
+			//producer.send(new ProducerRecord<>(TOPIC, new Random().nextInt(), HELLO_KAFKA));
 		}
 		producer.flush();
 		producer.close();
 
 		KafkaConsumer<Integer, String> consumer = getIntegerStringKafkaConsumer();
 		embeddedKafka.consumeFromAllEmbeddedTopics(consumer);
-		final ConsumerRecords<Integer, String> records = KafkaTestUtils.getRecords(consumer, 10000L, 100);
+		final ConsumerRecords<Integer, String> records = KafkaTestUtils.getRecords(consumer, 1_000L, 100);
 		// TODO: output partition of each message
 		// TODO: assert that both partitions are present in the resulting records
 		consumer.close();
@@ -101,8 +100,8 @@ class ApplicationTests {
 		Producer<Integer, String> producer = getIntegerStringProducer();
 		for (int i = 0; i < 100; i++) {
 			// should be random, but we try it with a fixed key first
-			//producer.send(new ProducerRecord<Integer, String>(TOPIC, 0, value));
-			producer.send(new ProducerRecord<>(TOPIC, new Random().nextInt(), HELLO_KAFKA));
+			//producer.send(new ProducerRecord<Integer, String>(TOPIC, 0, "counter: " + i));
+			producer.send(new ProducerRecord<Integer, String>(TOPIC, new Random().nextInt(), "counter: " + i));
 		}
 		producer.flush();
 		producer.close();
@@ -110,7 +109,8 @@ class ApplicationTests {
 		KafkaConsumer<Integer, String> consumer = getIntegerStringKafkaConsumer();
 		embeddedKafka.consumeFromAllEmbeddedTopics(consumer);
 		final ConsumerRecords<Integer, String> records = KafkaTestUtils.getRecords(consumer, 1000L, 100);
-		TopicPartition partition = new TopicPartition(TOPIC, 0);
+		TopicPartition partition = new TopicPartition(TOPIC, 0); // only one partition
+		// TODO: seek a different offset
 		//consumer.seek(partition, 10L);
 		final ConsumerRecords<Integer, String> replays = KafkaTestUtils.getRecords(consumer, 1000L);
 		consumer.close();

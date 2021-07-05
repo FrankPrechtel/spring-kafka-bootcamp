@@ -51,7 +51,7 @@ public class TemplateTests {
 		assertEquals(11, stopOffset - startOffset);
 	}
 
-	@Test
+	// @Test
 	void helloAsync() throws Exception {
 		final ListenableFuture<SendResult<String, String>> async = controller.sendAsyncEvent("async");
 	}
