@@ -84,7 +84,7 @@ class ApplicationTests {
 
 		KafkaConsumer<Integer, String> consumer = getIntegerStringKafkaConsumer();
 		embeddedKafka.consumeFromAllEmbeddedTopics(consumer);
-		final ConsumerRecords<Integer, String> records = KafkaTestUtils.getRecords(consumer, 1_000L, 100);
+		final ConsumerRecords<Integer, String> records = KafkaTestUtils.getRecords(consumer, 5_000L, 100);
 		// TODO: output partition of each message
 		// TODO: assert that both partitions are present in the resulting records
 		consumer.close();
