@@ -49,7 +49,7 @@ public class TemplateTests {
 		final long stopOffset = controller.sendSyncEvent("synchrotron").getRecordMetadata().offset();
 		log.debug("stopOffset: {}", stopOffset);
 		assertEquals(11, stopOffset - startOffset);
-		Thread.sleep(10_000L);
+		Thread.sleep(20_000L);
 	}
 
 	// @Test
