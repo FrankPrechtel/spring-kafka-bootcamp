@@ -2,7 +2,7 @@
 
 protocol Bootcamp {
 	record Participant {
-		string uuid;
+		string id;
 		string surname;
 		string familyName;
 		union { null, string } favoriteTextEditor;
