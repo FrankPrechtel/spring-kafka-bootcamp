@@ -14,4 +14,5 @@
 * Ausblick
   * Kafka Connect
   * ksqlDB
+  * Event Sourcing
   * etc.
