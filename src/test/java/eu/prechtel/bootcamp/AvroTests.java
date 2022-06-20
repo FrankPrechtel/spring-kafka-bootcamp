@@ -13,7 +13,7 @@ public class AvroTests {
 		Participant participant = Participant.newBuilder()
 			.setSurname("John")
 			.setFamilyName("Smith")
-			.setUuid(UUID.randomUUID().toString())
+			.setId(UUID.randomUUID().toString())
 			.setFavoriteTextEditor("vi")
 			.build();
 	}
@@ -25,7 +25,7 @@ public class AvroTests {
 			Participant participant = Participant.newBuilder()
 				.setSurname("John")
 				.setFamilyName("Smith")
-				.setUuid(UUID.randomUUID().toString())
+				.setId(UUID.randomUUID().toString())
 				.setFavoriteTextEditor("vi")
 				.build();
 		});

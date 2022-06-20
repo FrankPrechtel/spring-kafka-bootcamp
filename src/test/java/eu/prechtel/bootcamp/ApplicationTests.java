@@ -60,7 +60,7 @@ class ApplicationTests {
 
 		KafkaConsumer<Integer, String> consumer = getIntegerStringKafkaConsumer();
 		embeddedKafka.consumeFromAllEmbeddedTopics(consumer);
-		final ConsumerRecord<Integer, String> singleRecord = KafkaTestUtils.getSingleRecord(consumer, TOPIC, 10000L);
+		final ConsumerRecord<Integer, String> singleRecord = KafkaTestUtils.getSingleRecord(consumer, TOPIC, 10_000L);
 		log.info("received record with key '{}', value '{}' on partition {}",
 			singleRecord.key(),
 			singleRecord.value(),
