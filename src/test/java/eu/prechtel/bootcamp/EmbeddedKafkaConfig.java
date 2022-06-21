@@ -14,6 +14,9 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.kafka.support.ExponentialBackOffWithMaxRetries;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 
@@ -35,6 +38,15 @@ public class EmbeddedKafkaConfig {
 		factory.setConcurrency(1);
 		return factory;
 	}
+
+	/*
+	@Bean
+	DefaultErrorHandler eh() {
+		return new DefaultErrorHandler((rec, ex) -> {
+			System.out.println("Recovered: " + rec);
+		}, new FixedBackOff(0L, 0L));
+	}
+	 */
 
 	@Bean
 	KafkaTemplate<String, String> kafkaTemplate() {
