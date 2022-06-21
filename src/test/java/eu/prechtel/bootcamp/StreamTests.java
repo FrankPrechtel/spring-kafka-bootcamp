@@ -48,7 +48,8 @@ public class StreamTests {
 				"input-kafka-topic",
 				UUID.randomUUID().toString(),
 				"Streaming counter: " + String.valueOf(i)));
-		Thread.sleep(1000);
+		// use https://github.com/awaitility/awaitility
+		Thread.sleep(1_000L);
 	}
 
 	// @Test
