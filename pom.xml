@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.6</version>
+		<version>2.7.9</version>
 		<relativePath/>
 	</parent>
 	<groupId>eu.prechtel</groupId>
@@ -17,7 +17,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<avro.version>1.11.0</avro.version>
+		<avro.version>1.11.1</avro.version>
 	</properties>
 
 	<dependencies>
