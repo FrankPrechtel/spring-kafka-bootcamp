@@ -16,6 +16,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -60,7 +61,7 @@ class ApplicationTests {
 
 		KafkaConsumer<Integer, String> consumer = getIntegerStringKafkaConsumer();
 		embeddedKafka.consumeFromAllEmbeddedTopics(consumer);
-		final ConsumerRecord<Integer, String> singleRecord = KafkaTestUtils.getSingleRecord(consumer, TOPIC, 10_000L);
+		final ConsumerRecord<Integer, String> singleRecord = KafkaTestUtils.getSingleRecord(consumer, TOPIC, Duration.ofSeconds(10));
 		log.info("received record with key '{}', value '{}' on partition {}",
 			singleRecord.key(),
 			singleRecord.value(),
@@ -84,7 +85,7 @@ class ApplicationTests {
 
 		KafkaConsumer<Integer, String> consumer = getIntegerStringKafkaConsumer();
 		embeddedKafka.consumeFromAllEmbeddedTopics(consumer);
-		final ConsumerRecords<Integer, String> records = KafkaTestUtils.getRecords(consumer, 5_000L, 100);
+		final ConsumerRecords<Integer, String> records = KafkaTestUtils.getRecords(consumer, Duration.ofSeconds(5), 100);
 		// TODO: output partition of each message
 		// TODO: assert that both partitions are present in the resulting records
 		consumer.close();
@@ -108,11 +109,11 @@ class ApplicationTests {
 
 		KafkaConsumer<Integer, String> consumer = getIntegerStringKafkaConsumer();
 		embeddedKafka.consumeFromAllEmbeddedTopics(consumer);
-		final ConsumerRecords<Integer, String> records = KafkaTestUtils.getRecords(consumer, 1000L, 100);
+		final ConsumerRecords<Integer, String> records = KafkaTestUtils.getRecords(consumer, Duration.ofSeconds(1), 100);
 		TopicPartition partition = new TopicPartition(TOPIC, 0); // only one partition
 		// TODO: seek a different offset
 		//consumer.seek(partition, 10L);
-		final ConsumerRecords<Integer, String> replays = KafkaTestUtils.getRecords(consumer, 1000L);
+		final ConsumerRecords<Integer, String> replays = KafkaTestUtils.getRecords(consumer, Duration.ofSeconds(1));
 		consumer.close();
 		log.info("replays: {}", replays.count());
 		assertTrue(replays.isEmpty());

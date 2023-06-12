@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.9</version>
+		<version>3.1.0</version>
 		<relativePath/>
 	</parent>
 	<groupId>eu.prechtel</groupId>
@@ -16,7 +16,7 @@
 	<url>https://github.com/FrankPrechtel/spring-kafka-bootcamp</url>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<avro.version>1.11.1</avro.version>
 	</properties>
 
@@ -89,7 +89,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>3.4.0</version>
 				<executions>
 					<execution>
 						<id>add-source</id>

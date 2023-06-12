@@ -11,6 +11,8 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
 @Component
 @EnableKafka
 public class TemplateListener {
@@ -27,7 +29,7 @@ public class TemplateListener {
 			ack.acknowledge();
 		} else {
 			log.info("TemplateListener NACK: [{}] with [{}] and offset [{}]", record.key(), record.value(), offset);
-			ack.nack(1_000L);
+			ack.nack(Duration.ofSeconds(1));
 		}
 	}
 }

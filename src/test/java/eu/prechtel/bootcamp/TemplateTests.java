@@ -10,8 +10,8 @@ import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.util.concurrent.ListenableFuture;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,7 +54,7 @@ public class TemplateTests {
 	}
 
 	// @Test
-	void helloAsync() throws Exception {
-		final ListenableFuture<SendResult<String, String>> async = controller.sendAsyncEvent("async");
+	void helloAsync() {
+		final CompletableFuture<SendResult<String, String>> async = controller.sendAsyncEvent("async");
 	}
 }
