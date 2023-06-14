@@ -37,7 +37,7 @@ class ApplicationTests {
 	final Logger log = LoggerFactory.getLogger(ApplicationTests.class);
 	final private EmbeddedKafkaBroker embeddedKafka;
 
-	ApplicationTests(@Autowired EmbeddedKafkaBroker embeddedKafka) {
+	ApplicationTests(EmbeddedKafkaBroker embeddedKafka) {
 		this.embeddedKafka = embeddedKafka;
 	}
 
@@ -77,7 +77,7 @@ class ApplicationTests {
 
 		for (int i = 0; i < 100; i++) {
 			// should be random, but we try it with a fixed key first
-			producer.send(new ProducerRecord<Integer, String>(TOPIC, 0, HELLO_KAFKA));
+			producer.send(new ProducerRecord<Integer, String>(TOPIC, 1234, HELLO_KAFKA));
 			//producer.send(new ProducerRecord<>(TOPIC, new Random().nextInt(), HELLO_KAFKA));
 		}
 		producer.flush();
