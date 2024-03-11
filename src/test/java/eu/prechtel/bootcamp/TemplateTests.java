@@ -50,7 +50,7 @@ public class TemplateTests {
 		log.debug("stopOffset: {}", stopOffset);
 		assertEquals(11, stopOffset - startOffset);
 		// use https://github.com/awaitility/awaitility
-		Thread.sleep(10_000L);
+		Thread.sleep(20_000L);
 	}
 
 	// @Test
