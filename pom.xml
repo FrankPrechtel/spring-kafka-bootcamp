@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.1</version>
+		<version>3.3.4</version>
 		<relativePath/>
 	</parent>
 	<groupId>eu.prechtel</groupId>
@@ -17,7 +17,7 @@
 
 	<properties>
 		<java.version>21</java.version>
-		<avro.version>1.11.3</avro.version>
+		<avro.version>1.12.0</avro.version>
 	</properties>
 
 	<dependencies>
@@ -101,6 +101,26 @@
 							<sources>
 								<source>target/generated-sources/avro</source>
 							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.5.0</version>
+				<executions>
+					<execution>
+						<id>enforce-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>3.6.3</version>
+								</requireMavenVersion>
+							</rules>
 						</configuration>
 					</execution>
 				</executions>
