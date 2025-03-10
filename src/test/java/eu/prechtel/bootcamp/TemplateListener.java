@@ -25,10 +25,10 @@ public class TemplateListener {
 	public void consume(@Payload ConsumerRecord<String, String> record, @Header(KafkaHeaders.OFFSET) long offset, Acknowledgment ack) {
 
 		if (System.currentTimeMillis() % 2L == 0) {
-			log.info("TemplateListener  ACK: [{}] with [{}] and offset [{}]", record.key(), record.value(), offset);
+			log.info("TemplateListener  ACK: offset [{}] with [{}] and [{}]", offset, record.key(), record.value());
 			ack.acknowledge();
 		} else {
-			log.info("TemplateListener NACK: [{}] with [{}] and offset [{}]", record.key(), record.value(), offset);
+			log.info("TemplateListener NACK: offset [{}] with [{}] and [{}]", offset, record.key(), record.value());
 			ack.nack(Duration.ofSeconds(1));
 		}
 	}
