@@ -10,31 +10,34 @@ import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestConstructor;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
+
 
 @ActiveProfiles("kafka-embedded")
-@SpringBootTest
 @DirtiesContext
 @EmbeddedKafka(
 	partitions = 1,
 	controlledShutdown = true,
 	topics = "example-kafka-topic",
-	ports = 9092, zookeeperPort = 2181,
 	bootstrapServersProperty = "spring.kafka.bootstrap-servers"
 )
+@SpringBootTest
+@TestConstructor(autowireMode = ALL)
 public class TemplateTests {
 
 	final Logger log = LoggerFactory.getLogger(TemplateTests.class);
-	final private EmbeddedKafkaBroker embeddedKafka;
-	private final HelloController controller;
+	final EmbeddedKafkaBroker embeddedKafka;
+	final HelloController controller;
 
 	TemplateTests(
-		@Autowired EmbeddedKafkaBroker embeddedKafka,
-		@Autowired HelloController controller) {
+		EmbeddedKafkaBroker embeddedKafka,
+		HelloController controller) {
 		this.embeddedKafka = embeddedKafka;
 		this.controller = controller;
 	}

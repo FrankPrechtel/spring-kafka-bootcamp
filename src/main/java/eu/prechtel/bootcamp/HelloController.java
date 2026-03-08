@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @Service
-@EnableKafka
+//@EnableKafka
 public class HelloController {
 
 	final Logger log = LoggerFactory.getLogger(HelloController.class);

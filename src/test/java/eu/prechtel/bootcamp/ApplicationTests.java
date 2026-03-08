@@ -9,7 +9,6 @@ import org.apache.kafka.common.TopicPartition;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
@@ -28,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.*;
 	partitions = 2,
 	topics = "apptest-kafka-topic",
 	controlledShutdown = true,
-	ports = 9092, zookeeperPort = 2181,
 	bootstrapServersProperty = "spring.kafka.bootstrap-servers")
 class ApplicationTests {
 
@@ -91,7 +89,7 @@ class ApplicationTests {
 	}
 
 	private KafkaConsumer<Integer, String> getIntegerStringKafkaConsumer() {
-		Map<String, Object> consumerProps = KafkaTestUtils.consumerProps("my-consumer-group", "false", embeddedKafka);
+		Map<String, Object> consumerProps = KafkaTestUtils.consumerProps(embeddedKafka, "my-consumer-group", true);
 		return new KafkaConsumer<>(consumerProps);
 	}
 

@@ -27,7 +27,7 @@ public class EmbeddedKafkaConfig {
 
 	final Logger log = LoggerFactory.getLogger(EmbeddedKafkaConfig.class);
 
-	@Value("${spring.kafka.bootstrap-servers:localhost:9092}")
+	@Value("${spring.kafka.bootstrap-servers}")
 	private String bootstrapServers;
 
 	@Bean

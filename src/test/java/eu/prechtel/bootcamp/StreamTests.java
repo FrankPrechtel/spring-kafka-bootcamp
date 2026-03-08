@@ -7,10 +7,8 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -21,25 +19,30 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestConstructor;
 
 import java.util.Properties;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
+
 @ActiveProfiles("kafka-embedded")
-@SpringBootTest
 @DirtiesContext
 @EmbeddedKafka(
 	partitions = 1,
 	controlledShutdown = true,
-	topics = {"input-kafka-topic", "output-kafka-topic"},
-	ports = 9092, zookeeperPort = 2181,
-	bootstrapServersProperty = "spring.kafka.bootstrap-servers")
+	topics = {"input-kafka-topic", "output-kafka-topic"})
+@SpringBootTest
+@TestConstructor(autowireMode = ALL)
 public class StreamTests {
 	final Logger log = LoggerFactory.getLogger(StreamTests.class);
 
-	@Autowired
-	KafkaTemplate<String, String> template;
+	final KafkaTemplate<String, String> template;
+
+	public StreamTests(KafkaTemplate<String, String> template) {
+		this.template = template;
+	}
 
 	@Test
 	void fireAndForget() throws InterruptedException {
@@ -47,7 +50,7 @@ public class StreamTests {
 			template.send(
 				"input-kafka-topic",
 				UUID.randomUUID().toString(),
-				"Streaming counter: " + String.valueOf(i)));
+				"Streaming counter: " + i));
 		// use https://github.com/awaitility/awaitility
 		Thread.sleep(1_000L);
 	}
